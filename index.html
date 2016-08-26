@@ -12,26 +12,43 @@ layout: default
 		<img src="" class="index-user-img">
 	</div>
 	<div class="navList">
-		<a class="nav-list css"  href="#" hover-text="css">css</a> 
-		<a class="nav-list canvas" href="#" hover-text="canvas">canvas</a>
-		<a class="nav-list js" href="#" hover-text="javaScript">js</a>
-		<a class="nav-list nodeJs" href="#" hover-text="nodeJs">nodeJs</a>
-		<a class="nav-list gulp" href="#" hover-text="gulp">gulp</a>
-		<a class="nav-list requireJs" href="#" hover-text="requireJs">requireJs</a>
+		<a class="nav-list css"  href="#" hover-text="css" type="css">css</a> 
+		<a class="nav-list canvas" href="#" hover-text="canvas" type="canvas">canvas</a>
+		<a class="nav-list js" href="#" hover-text="javaScript" type="javaScript">js</a>
+		<a class="nav-list nodeJs" href="#" hover-text="nodeJs" type="nodeJs">nodeJs</a>
+		<a class="nav-list gulp" href="#" hover-text="gulp" type="gulp">gulp</a>
+		<a class="nav-list requireJs" href="#" hover-text="requireJs" type="requireJs">requireJs</a>
 		
-		<a class="nav-list other other-text" href="#" hover-text="随笔">随笔</a>
+		<a class="nav-list other other-text" href="#" hover-text="随笔" type="other">随笔</a>
 	</div>
 	
 </nav>
 <div class="index-body">
 <h1 class="index-h1">Record some, learn some</h1> 
-	<div class="index-content-list" id="index-content-list">
-		<ul class="content-list">
+	<div class="index-content-list" id="index-content-list"> 
+		<ul class="content-list css">
 		   {% for post in site.posts %}
-		       <li class="list-box"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+		   		{% for tags in post.tags %}
+			  		{% if tags == 'css' %} 
+				  		<li class="list-box"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+					{% endif %}
+				{% endfor %}
+		       
 		   {% endfor %}
 		</ul>
-		{{content }}	
+		<ul class="content-list canvas">
+		   {% for post in site.posts %}
+		   		{% for tags in post.tags %}
+			  		{% if tags == 'canvas' %} 
+				  		<li class="list-box"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+					{% endif %}
+				{% endfor %}
+		       
+		   {% endfor %}
+		</ul>
+		<div>
+			 {{content }}
+		</div>		
 	</div>
 
 	<div class="shadow top-left"></div>

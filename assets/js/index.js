@@ -41,7 +41,7 @@ var closeNavCallback = function(){
 
 var closeNav = function(){
 	if($indexContentList.hasClass("active")){
-		closeContentList(closeNavCallback);
+		closeContentList(undefined, closeNavCallback);
 	}else{
 		closeNavCallback();
 	}
@@ -53,14 +53,22 @@ var openContentList = function(jqdom){
 	jqdom.addClass("active");
 	$indexContentList.show(0,function(){
 		$indexContentList.addClass("active");
-	});
+	}); 
+	$(".content-list").removeClass("open");
+	switch(jqdom.attr("type")){
+		case "css":
+			$(".content-list.css").addClass("open");
+		break;
+		case "canvas":
+			$(".content-list.canvas").addClass("open");
+		break;
+	}
 }
 
-var closeContentList = function(callback){
-
+var closeContentList = function(jqdom, callback){
 	$list.removeClass("active");
 	$indexContentList.fadeOut(300,function(){
 		$indexContentList.removeClass("active");
 		typeof callback ==="function" ? callback() : false;
-	})
+	}) 
 }
