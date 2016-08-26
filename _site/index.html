@@ -3,33 +3,59 @@
    <head>
        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
        <title>My blog</title>
+       <link rel="icon" href="assetsimg/favicon.ico" type="image/x-icon" />
+       <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" />
+       <link rel="stylesheet" type="text/css" href="assets/css/style.css">
    </head>
    <body>
-   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-<header class="index-header">
-	<h1 class="index-h1">记录一些知识</h1>
-	<p>水平有限，请见谅</p>
-</header> 
-<nav class="index-left-nav">
-	<a class="nav-list css"  href="#">css</a> 
-	<a class="nav-list canvas" href="#">canvas</a>
-	<a class="nav-list js" href="#">js</a>
-	<a class="nav-list nodeJs" href="#">nodeJs</a>
-	<a class="nav-list gulp" href="#">gulp</a>
-	<a class="nav-list requireJs" href="#">requireJs</a>
+   <header class="index-header">
 	
-	<a class="nav-list other other-text" href="#">随笔</a>
-</nav>
-<div class="index-body">
-	<div class="index-content-list">
-		<ul class="content-list">
-		   
-		       <li class="list-box"><a href="/blog/2016/08/25/first-post.html">Flexbox栅格系统</a></li>
-		   
-		</ul>	
+</header> 
+<div class="navBtn" id="navBtn">
+	<span></span>
+</div>
+<nav class="index-left-nav">
+	<div class="index-user">
+		<img src="" class="index-user-img">
+	</div>
+	<div class="navList">
+		<a class="nav-list css"  href="#" hover-text="css">css</a> 
+		<a class="nav-list canvas" href="#" hover-text="canvas">canvas</a>
+		<a class="nav-list js" href="#" hover-text="javaScript">js</a>
+		<a class="nav-list nodeJs" href="#" hover-text="nodeJs">nodeJs</a>
+		<a class="nav-list gulp" href="#" hover-text="gulp">gulp</a>
+		<a class="nav-list requireJs" href="#" hover-text="requireJs">requireJs</a>
+		
+		<a class="nav-list other other-text" href="#">随笔</a>
 	</div>
 	
+</nav>
+<div class="index-body">
+<h1 class="index-h1">Record some, learn some</h1> 
+	<div class="index-content-list" id="index-content-list">
+		<ul class="content-list">
+		   
+		       <li class="list-box"><a href="/blog/2016/08/26/first-post.html">Flexbox栅格系统</a></li>
+		   
+		       <li class="list-box"><a href="/blog/2016/08/25/first-post.html">Flexbox栅格系统1</a></li>
+		   
+		       <li class="list-box"><a href="/blog/2016/08/24/first-post.html">Flexbox栅格系统</a></li>
+		   
+		</ul>
+		<h1>Flexbox栅格系统</h1>
+<p>之前看了一篇将Flexbox栅格系统的文章，觉得很棒，现记录下来，并做几个实验，写一写自己的理解</p>
+<p>原文链接：</p><a href="https://zhuanlan.zhihu.com/p/21887541">https://zhuanlan.zhihu.com/p/21887541</a>
+<a href="/blog/index.html">Go back</a>	
+	</div>
+
+	<div class="shadow top-left"></div>
+	<div class="shadow top-right"></div>
+	<div class="shadow bottom-left"></div>
+	<div class="shadow bottom-right"></div>
+	<div class="index-body-mask"></div>
 </div>
 
    </body>
+   <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+   <script type="text/javascript" src="assets/js/index.js"></script>
 <html>
