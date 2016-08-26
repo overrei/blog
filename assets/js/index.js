@@ -33,12 +33,19 @@ var openNav = function(){
 	$navList.show();
 
 }
-
-var closeNav = function(){
+var closeNavCallback = function(){
 	$indexLeftNav.removeClass("active"); 
 	$navBtn.removeClass("active");
 	$navList.hide();
-	closeContentList();
+}
+
+var closeNav = function(){
+	if($indexContentList.hasClass("active")){
+		closeContentList(closeNavCallback);
+	}else{
+		closeNavCallback();
+	}
+	
 }
 
 var openContentList = function(jqdom){
@@ -49,10 +56,11 @@ var openContentList = function(jqdom){
 	});
 }
 
-var closeContentList = function(jqdom){
+var closeContentList = function(callback){
+
 	$list.removeClass("active");
-	$indexContentList.removeClass("active");
-	setTimeout(function(){
-		$indexContentList.hide();
-	},450);
+	$indexContentList.fadeOut(300,function(){
+		$indexContentList.removeClass("active");
+		typeof callback ==="function" ? callback() : false;
+	})
 }
