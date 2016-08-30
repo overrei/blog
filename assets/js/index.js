@@ -3,6 +3,8 @@ var $navBtn =$("#navBtn");
 var $navList = $(".navList");
 var $list = $navList.find(".nav-list");
 var $indexContentList = $("#index-content-list");
+var $mask = $("#mask");
+
 
 $navBtn.on("click",function(){
 	$navBtn.hasClass("active") ? closeNav() : openNav();
@@ -49,19 +51,32 @@ var closeNav = function(){
 }
 
 var openContentList = function(jqdom){
+	var iframeId = jqdom.attr("type");
+	var iframeSrc = jqdom.attr("data-href");
+	var $indexIframe = $(".index-iframe[iframe-id='"+iframeId+"']");
 	$list.removeClass("active");
 	jqdom.addClass("active");
+	$mask.addClass("active");
 	$indexContentList.show(0,function(){
 		$indexContentList.addClass("active");
 	}); 
 	$(".content-list").removeClass("open");
-	switch(jqdom.attr("type")){
-		case "css":
-			$(".content-list.css").addClass("open");
-		break;
-		case "canvas":
-			$(".content-list.canvas").addClass("open");
-		break;
+	$(".index-iframe").removeClass("open");
+	if($indexIframe.length === 0){
+		$indexIframe = $("<iframe>").addClass("index-iframe").attr("iframe-id", iframeId);
+	}
+
+	if(_isNull($indexIframe.attr("src"))){
+		
+		$indexIframe.attr("src", iframeSrc).appendTo($indexContentList);
+		_onloadIframe($indexIframe[0], function(){
+			$indexIframe.addClass("open");
+			$mask.removeClass("active");
+			
+		});
+	}else{
+		$indexIframe.addClass("open");
+		$mask.removeClass("active");
 	}
 }
 
@@ -72,3 +87,19 @@ var closeContentList = function(jqdom, callback){
 		typeof callback ==="function" ? callback() : false;
 	}) 
 }
+
+var _isNull = function(arg){
+  return !arg && arg !== 0 && typeof arg !== "boolean" ? true : false;
+}
+
+var _onloadIframe = function(iframe, callback){
+	if (iframe.addEventListener){ 
+		iframe.addEventListener("load", callback, false);
+	} else if(iframe.attachEvent) { 
+		iframe.attachEvent("onload", callback);
+	} else{
+	  iframe["onload"] = callback;
+	}
+}
+
+ 
