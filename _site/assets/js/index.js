@@ -68,11 +68,11 @@ var openContentList = function(jqdom){
 
 	if(_isNull($indexIframe.attr("src"))){
 		
-		$indexIframe.attr("src", iframeSrc).appendTo($indexContentList);
+		$indexIframe.attr("src", iframeSrc).appendTo($indexContentList); 
 		_onloadIframe($indexIframe[0], function(){
 			$indexIframe.addClass("open");
 			$mask.removeClass("active");
-			
+			openListAni(this);
 		});
 	}else{
 		$indexIframe.addClass("open");
@@ -96,10 +96,12 @@ var _onloadIframe = function(iframe, callback){
 	if (iframe.addEventListener){ 
 		iframe.addEventListener("load", callback, false);
 	} else if(iframe.attachEvent) { 
-		iframe.attachEvent("onload", callback);
+		iframe.attachEvent("onload", callback, false);
 	} else{
 	  iframe["onload"] = callback;
 	}
 }
 
- 
+var openListAni = function(dom){
+	if(dom.contentWindow.openAni)dom.contentWindow.openAni();
+}

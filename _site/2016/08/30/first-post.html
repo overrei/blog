@@ -7,9 +7,14 @@
        <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" /> 
    </head>
    <body>
-   <h1>Flexbox栅格系统1</h1> 
+   <h1>Flexbox栅格系统</h1> 
 <p>之前看了一篇将Flexbox栅格系统的文章，觉得很棒，现记录下来，并做几个实验，写一写自己的理解</p>
-<p>原文链接：</p><a href="https://zhuanlan.zhihu.com/p/21887541">https://zhuanlan.zhihu.com/p/21887541</a>
+<p>原文地址：</p><a href="https://zhuanlan.zhihu.com/p/21887541">https://zhuanlan.zhihu.com/p/21887541</a>
+<hr/>
+<h3>想法</h3>
+<p>按照我自己的理解，Flexbox栅格布局和bootstrap的栅格布局的<code>.col-xs-</code>样式很接近，但是有一定不同之处。</p>
+<p>Flexbox栅格布局是有弹性的，根据父页面的大小改变而改变。但同时会保证内部元素的空间的充足。所以当浏览器宽度过小的情况发生时，为了保证布局内内容的完整，会使浏览器出现滚动条。</p>
+<p>bootstrap的栅格布局虽然也有弹性，会根据父页面的大小改变而改变。但在使用<code>.col-xs-</code>样式的时候（强制水平排列）。如果浏览器的宽度过小，还是会换行的。</p>
 <a onclick="history.go(-1)" href="javascript:;">Go back</a>
    </body>
  
