@@ -1,2 +1,6 @@
 encoding: utf-8 
 baseurl: /blog
+markdown: kramdown
+kramdown:
+  input: GFM
+highlight: true

@@ -27,6 +27,9 @@ ul, li {
 .list-big-title{
 	color: #644137;  
 }
+.content-list{
+    opacity:0;
+}
  
 .open-ani .list-big-title{
     -webkit-animation: textright .45s ease-in both;
@@ -35,10 +38,10 @@ ul, li {
     animation: textright .45s ease-in both;
 }
 .open-ani .content-list{
-    -webkit-animation: listboxtop .65s ease-in-out;
- 	-moz-animation: listboxtop .65s ease-in-out;
- 	-o-animation: listboxtop .65s ease-in-out;
- 	animation: listboxtop .65s ease-in-out;
+    -webkit-animation: listboxtop .65s ease-in-out both;
+ 	-moz-animation: listboxtop .65s ease-in-out both;
+ 	-o-animation: listboxtop .65s ease-in-out both;
+ 	animation: listboxtop .65s ease-in-out both;
 }
 .list-box {
 	width: 210px;

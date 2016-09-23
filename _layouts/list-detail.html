@@ -1,14 +1,32 @@
 ﻿<!DOCTYPE html>
 <html>
-   <head>
-       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
-       <title>list-detail</title>
-       <link rel="icon" href="assetsimg/favicon.ico" type="image/x-icon" />
-       <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" /> 
-   </head>
-   <body>
-   {{content }}
-   </body>
- 
-   
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>list-detail</title>
+    <link rel="stylesheet" type="text/css" href="../../../assets/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/detail.css">
+    <link href="../../../assets/css/atelier-cave-dark.css" rel="stylesheet">
+</head>
+
+<body>
+    {{content }}
+    <div class='footTools'>
+        <ul>
+            <li>
+                <a class="fa fa-reply" onclick="history.go(-1)" href="javascript:;"></a>
+            </li>
+            <li>
+                <a class="fa fa-chevron-up" href="javascript:;"></a>
+            </li>
+        </ul>
+    </div>
+</body>
+
+<script src="http://apps.bdimg.com/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+
 <html>

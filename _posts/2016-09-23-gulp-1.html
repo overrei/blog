@@ -1,0 +1,179 @@
+---
+layout: list-detail 
+title: 记录一下自己写的基于gulp的前端自动化工作流 
+tags: [gulp] 
+pageImgurl: http://ocifiuhrn.bkt.clouddn.com/%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.jpg 
+---
+<div class="detail-head">
+<h1 class="title-h1">{{ page.title }}</h1>
+<p>废话不多说，直接上干货！</p> 
+</div>
+<div class="detail-body">
+<h3>目录结构</h3>
+<img class="img-shadow img-center" src="http://ocifiuhrn.bkt.clouddn.com/%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.jpg" width="300" />
+<p>这个是整个工作流制作完成后的目录结构。</p>
+<p><code class="self-code">getstart</code>：是工作流的根目录，名称随意。</p>
+<p><code class="self-code">build</code>：是工作流的输出目录。</p>
+<p><code class="self-code">gulp</code>：是gulp的配置目录。</p>
+<p><code class="self-code">src</code>：是开发环境的根目录。</p>
+<p><code class="self-code file">gulpfile.js</code>：是gulp的入口函数，可以将所有的tasks写在这里，但是为了可读性和可配置性，我给拆开了。</p>
+<h3>安装各种模块和插件</h3>
+<p>在命令提示行中安装以下插件</p>
+<pre><code class="javaScript">npm install   --save-dev   gulp
+npm install   --save-dev   gulp-watch       
+npm install   --save-dev   require-dir      //这个插件的作用是管理tasks。
+npm install   --save-dev   gulp-plumber    //监视js出现错误后的修正插件（很有必要装）
+npm install   --save-dev   gulp-if          //gulp逻辑判断插件
+npm install   --save-dev   gulp-order       //文件排序用的插件，经常用在js和css文件合并前
+npm install   --save-dev   gulp-uglify       //js文件压缩插件
+npm install   --save-dev   gulp-concat       //文件合并用的插件
+npm install   --save-dev   gulp-clean-css       //压缩css的插件
+npm install   --save-dev   gulp-autoprefixer       //给css样式自动加上浏览器前缀
+npm install   --save-dev   gulp-css-spriter       //雪碧图插件
+npm install   --save-dev   gulp-htmlmin         //压缩html文件或压缩文件内css和js部分插件
+npm install   --save-dev   gulp-file-include         //html文件include模板插件
+npm install   --save-dev   gulp-processhtml       //html中js和css引用路径合并插件
+npm install   --save-dev   gulp-connect         //使用connect启动一个Web服务器
+</code></pre>
+<h3>tasks编写</h3>
+<p>模块和插件安装完后，开始编写tasks</p>
+<p>上面说到了我把<code class="self-code file">gulpfile.js</code>的内容给拆开了，现在我们先看下拆开后的<code class="self-code file">gulpfile.js</code>的内容。</p>
+<pre><code>var requireDir = require('require-dir');
+requireDir('./gulp/tasks', { recurse: true});</code></pre>
+<p>读取<code class="self-code">./gulp/task</code>路径下的<code class="self-code">default</code>任务。</p>
+<img class="img-shadow img-center" src="http://ocifiuhrn.bkt.clouddn.com/tasks.jpg" width="300" />
+<p>我们可以看到有很多task在文件夹内，除此之外还有一个<code class="self-code file">config.js</code>配置文件，这里面是我们task的所有配置，暂时略过。</p>
+<p>里面有些task已经没有用了，我们现在需要关注的是<code class="self-code file">css.js</code>、<code class="self-code file">default.js</code>、<code class="self-code file">html.js</code>、<code class="self-code file">js.js</code>、<code class="self-code file">watch.js</code>这几个task文件。除此之外的已经废弃。</p>
+<p><code class="self-code file">default.js</code>任务：</p>
+<pre><code class="javaScript">var gulp = require('gulp');
+//使用connect启动一个Web服务器
+var connect = require('gulp-connect');
+//定义livereload任务
+gulp.task('connect', function() {
+    connect.server({
+        root: './',
+        livereload: true
+    });
+});
+
+gulp.task('default', ['watch', 'connect']);
+</code></pre>
+<p><code class="self-code file">watch.js</code>任务：</p>
+<pre><code class="javaScript">var gulp = require('gulp');
+var watch = require('gulp-watch');
+var config = require('../config');
+gulp.task('watch', function() {
+    if (config.css.active) {
+        //编译压缩css文件
+        watch(config.css.all, function() {
+            //监听所有css 
+            gulp.start('css');
+            //出现修改、立马执行css任务
+        });
+    }
+
+    if (config.js.active) {
+        watch(config.js.all, function() {
+            //监听所有js     
+            gulp.start('js');
+        });
+    }
+
+    if (config.html.active) {
+        watch(config.html.all, function() {
+            //监听所有html
+            gulp.start('html');
+        });
+    }
+})
+</code></pre>
+<p><code class="self-code file">js.js</code>任务：</p>
+<pre><code class="javaScript">var gulp = require('gulp');
+//使用gulp-plumber来捕获处理任务中的错误
+var plumber = require('gulp-plumber');
+var order = require("gulp-order");
+//文件合并插件
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var config = require('../config').js;
+//使用connect启动一个Web服务器
+var connect = require('gulp-connect');
+
+gulp.task('js', function() {
+    var excludeStr = config.settings.excludePath + "{" + config.settings.excludeName + "}.js";
+    return gulp.src([config.all, excludeStr])
+        //plumber给pipe打补丁,这样可以防止压缩js时产生的错误导致监视任务停止
+        .pipe(plumber())
+        .pipe(order(config.settings.order))
+        .pipe(concat(config.settings.outName))
+        .pipe(uglify())
+        .pipe(gulp.dest(config.dest))
+        .pipe(connect.reload());
+});
+</code></pre>
+<p><code class="self-code file">css.js</code>任务：</p>
+<pre><code class="javaScript">var gulp = require('gulp');
+//使用gulp-plumber来捕获处理任务中的错误
+var plumber = require('gulp-plumber');
+var order = require("gulp-order");
+//文件合并插件
+var concat = require('gulp-concat');
+//雪碧图插件
+var css_spriter = require('gulp-css-spriter');
+var minifycss = require('gulp-clean-css');
+//自动给样式加上浏览器前缀
+var autoprefixer = require('gulp-autoprefixer');
+var config = require('../config').css;
+//使用connect启动一个Web服务器
+var connect = require('gulp-connect');
+gulp.task('css', function() {
+    var excludeStr = config.settings.excludePath + "{" + config.settings.excludeName + "}.css";
+    return gulp.src([config.all, excludeStr])
+        // return gulp.src([config.all, config.settings.excludePath + "{" + config.settings.excludeName + "}.css"])
+        //plumber给pipe打补丁,这样可以防止压缩js时产生的错误导致监视任务停止
+        .pipe(plumber())
+        .pipe(order(config.settings.order))
+        .pipe(concat(config.settings.outName))
+        //执行css雪碧图压制
+        .pipe(css_spriter(config.settings.spriter))
+        //执行css浏览器前缀
+        .pipe(autoprefixer(config.settings.autoprefixer))
+        //执行编译  输出目录  
+        .pipe(minifycss(config.settings.minifycss))
+        .pipe(gulp.dest(config.dest))
+        .pipe(connect.reload());
+}); 
+</code></pre>
+<p><code class="self-code file">html.js</code>任务：</p>
+<pre><code class="javaScript">var gulp = require('gulp');
+//使用gulp-plumber来捕获处理任务中的错误
+var plumber = require('gulp-plumber');
+//压缩html中的js和css内容插件
+var htmlmin = require('gulp-htmlmin');
+//路径合并插件
+var processhtml = require('gulp-processhtml');
+//include模板插件
+var fileinclude = require('gulp-file-include');
+var gulpif = require('gulp-if');
+var config = require('../config').html;
+//使用connect启动一个Web服务器
+var connect = require('gulp-connect');
+
+gulp.task('html', function() {
+    var excludeStr = config.settings.excludePath + config.settings.excludeName + ".html";
+    return gulp.src([config.all, excludeStr])
+        //plumber给pipe打补丁,这样可以防止压缩js时产生的错误导致监视任务停止
+        .pipe(plumber())
+        //css和js的路径合并
+        .pipe(processhtml())
+        //合并模板
+        .pipe(gulpif(config.settings.include ? true : false, fileinclude(config.settings.include)))
+        //压缩html
+        .pipe(htmlmin(config.settings.htmlmin))
+        .pipe(gulp.dest(config.dest))
+        .pipe(connect.reload());
+}); 
+</code></pre>
+<h3>config.js配置编写</h3>
+</div>
+

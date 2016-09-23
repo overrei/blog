@@ -20,8 +20,7 @@ p,h1 {
 	margin: 0;
 	color:#333;
 }
-.index-header {
-}
+ 
 .index-h1 {
 	font-size: 6em;
 	text-align: center;
@@ -229,7 +228,7 @@ p,h1 {
 	top: 0;
 	box-shadow: 1px 0px 6px #777;
 	border-right: 1px solid #b9b9b9;
-	background: rgba(255, 255, 255, 0.75);
+	background: rgba(255, 255, 255, 0.85);
 	transform: translate(-150%, 0px);
 	-moz-transform: translate(-150%, 0px);
 	-webkit-transform: translate(-150%, 0px);
