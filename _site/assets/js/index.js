@@ -105,13 +105,3 @@ var _onloadIframe = function(iframe, callback) {
 var openListAni = function(dom) {
     if (dom.contentWindow.openAni) dom.contentWindow.openAni();
 }
-
-
-var img = new Image();
-img.src = 'http://ocifiuhrn.bkt.clouddn.com/index-bg.jpg';
-img.onerror = function() {
-    alert('error');
-}
-img.onload = function() {
-    alert('success');
-}
