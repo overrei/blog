@@ -234,7 +234,7 @@ h1 {
     right: 0;
     overflow: hidden;
     bottom: 0;
-    background: url(http://ocifiuhrn.bkt.clouddn.com/index-bg.jpg) no-repeat center center;
+    background: url(../assets/img/index-bg.jpg) no-repeat center center;
     background-size: cover;
     z-index: -1;
 }
