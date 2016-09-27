@@ -234,7 +234,7 @@ h1 {
     right: 0;
     overflow: hidden;
     bottom: 0;
-    background: url(../assets/img/index-bg.jpg) no-repeat center center;
+    background: url(../img/index-bg.jpg) no-repeat center center;
     background-size: cover;
     z-index: -1;
 }
