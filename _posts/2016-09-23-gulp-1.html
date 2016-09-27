@@ -1,8 +1,8 @@
 ---
 layout: list-detail 
 title: 记录一下自己写的基于gulp的前端自动化工作流 
-tags: [gulp] 
-pageImgurl: https://ocifiuhrn.bkt.clouddn.com/%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.jpg 
+tags: [gulp]  
+pageImgurl: /blog/assets/img/list-img/2016-09-23-gulp-1-img01.jpg
 ---
 <div class="detail-head">
 <h1 class="title-h1">{{ page.title }}</h1>
@@ -10,7 +10,7 @@ pageImgurl: https://ocifiuhrn.bkt.clouddn.com/%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%
 </div>
 <div class="detail-body">
 <h3>目录结构</h3>
-<img class="img-shadow img-center" src="https://ocifiuhrn.bkt.clouddn.com/%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.jpg" width="300" />
+<img class="img-shadow img-center" src="{{ site.baseurl }}/assets/img/list-img/2016-09-23-gulp-1-img01.jpg" width="300" />
 <p>这个是整个工作流制作完成后的目录结构。</p>
 <p><code class="self-code">getstart</code>：是工作流的根目录，名称随意。</p>
 <p><code class="self-code">build</code>：是工作流的输出目录。</p>
@@ -18,7 +18,7 @@ pageImgurl: https://ocifiuhrn.bkt.clouddn.com/%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%
 <p><code class="self-code">src</code>：是开发环境的根目录。</p>
 <p><code class="self-code file">gulpfile.js</code>：是gulp的入口函数，可以将所有的tasks写在这里，但是为了可读性和可配置性，我给拆开了。</p>
 <h3>安装各种模块和插件</h3>
-<p>在命令提示行中安装以下插件</p>
+<p>在命令提示行中安装以下插件，或者使用<code class="self-code file">package.js</code>来初始化安装。</p>
 <pre><code class="javaScript">npm install   --save-dev   gulp
 npm install   --save-dev   gulp-watch       
 npm install   --save-dev   require-dir      //这个插件的作用是管理tasks。
@@ -35,13 +35,45 @@ npm install   --save-dev   gulp-file-include         //html文件include模板�
 npm install   --save-dev   gulp-processhtml       //html中js和css引用路径合并插件
 npm install   --save-dev   gulp-connect         //使用connect启动一个Web服务器
 </code></pre>
+<code class="self-code file">package.js</code>文件内容：
+<pre><code class="javaScript">{
+  "name": "getstart",           //项目名称，自定义
+  "version": "1.0.0",           //项目版本号，自定义
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {          //所需插件集合
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-clean-css": "^2.0.12",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^5.0.0",
+    "gulp-css-spriter": "^0.3.3",
+    "gulp-file-include": "^0.14.0",
+    "gulp-htmlmin": "^2.0.0",
+    "gulp-if": "^2.0.1",
+    "gulp-less": "^3.1.0",
+    "gulp-linker": "^0.1.7",
+    "gulp-order": "^1.1.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-processhtml": "^1.1.0",
+    "gulp-uglify": "^2.0.0",
+    "gulp-watch": "^4.3.9",
+    "require-dir": "^0.3.0"
+  }
+}</code></pre>
 <h3>tasks编写</h3>
 <p>模块和插件安装完后，开始编写tasks</p>
 <p>上面说到了我把<code class="self-code file">gulpfile.js</code>的内容给拆开了，现在我们先看下拆开后的<code class="self-code file">gulpfile.js</code>的内容。</p>
 <pre><code>var requireDir = require('require-dir');
 requireDir('./gulp/tasks', { recurse: true});</code></pre>
 <p>读取<code class="self-code">./gulp/task</code>路径下的<code class="self-code">default</code>任务。</p>
-<img class="img-shadow img-center" src="https://ocifiuhrn.bkt.clouddn.com/tasks.jpg" width="300" />
+<img class="img-shadow img-center" src="{{ site.baseurl }}/assets/img/list-img/2016-09-23-gulp-1-img02.jpg" width="300" />
 <p>我们可以看到有很多task在文件夹内，除此之外还有一个<code class="self-code file">config.js</code>配置文件，这里面是我们task的所有配置，暂时略过。</p>
 <p>里面有些task已经没有用了，我们现在需要关注的是<code class="self-code file">css.js</code>、<code class="self-code file">default.js</code>、<code class="self-code file">html.js</code>、<code class="self-code file">js.js</code>、<code class="self-code file">watch.js</code>这几个task文件。除此之外的已经废弃。</p>
 <p><code class="self-code file">default.js</code>任务：</p>
@@ -175,5 +207,102 @@ gulp.task('html', function() {
 }); 
 </code></pre>
 <h3>config.js配置编写</h3>
+<p>因为gulp的插件不同，配置也不同，所以我把所有的配置都抽出来，放到同一个js文件中，这样就不用改来改去了，只用改一个地方即可。</p>
+<p>同时，配置的详细描述，也在注释里面写好了。</p>
+<pre><code class="javaScript">var src = './src';                                         //开发目录根路径
+var dest = './build';                                //编译目录根路径
+var assets = "src";
+module.exports = {
+    js: {                                                           //js任务的所有配置
+        active: true,                                     //是否激活该任务
+        all: src + "/js/**/*.js", //所有js 
+        src: src + "/js/*.js", //需要编译的js
+        dest: dest + "/script", //输出目录
+        settings: {　 //编译js过程需要的配置，可以为空
+            excludeName: "jquery-1.11.1,exclude1", //排除js的名称
+            excludePath: '!' + src + '/js/**/', //排除js的目录
+            outName: "all.min.script.js", //输出的js合并文件
+            order: [ //文件合并时的排序,写在order内的js的顺序高于未写在内的。可以为空！为空时按照文件在文件夹内的顺序自动合并，与html引用顺序无关
+                "index3.js",
+                "index2.js",
+                "index1.js",
+                'children/children3.js',
+                'children/**/*.js'
+            ]
+        }
+    },
+    css: {                                                              //css任务的所有配置
+        active: true,                                           //是否激活该任务
+        all: src + "/css/**/*.css", //所有css 
+        src: src + "/css/*.css", //需要编译的css
+        dest: dest + "/css", //输出目录
+        settings: {　　
+            excludeName: "a,b", //排除css的名称
+            excludePath: '!' + src + '/css/**/', //排除css的目录
+            outName: "all.min.style.css", //输出的css合并文件
+            order: [ //文件合并时的排序,写在order内的js的顺序高于未写在内的。可以为空！为空时按照文件在文件夹内的顺序自动合并，与html引用顺序无关
+                "3.css",
+                "2.css",
+                "1.css"
+            ],
+            minifycss: {
+                //编译css过程需要的配置，可以为空
+                advanced: false, //类型：Boolean 默认：true [是否开启高级优化（合并选择器等）]
+                compatibility: 'ie7', //保留ie7及以下兼容写法 类型：String 默认：''or'*' [启用兼容模式； 'ie7'：IE7兼容模式，'ie8'：IE8兼容模式，'*'：IE9+兼容模式]
+                keepBreaks: false, //类型：Boolean 默认：false [是否保留换行]
+                keepSpecialComments: '*'
+                    //保留所有特殊前缀 当你用autoprefixer生成的浏览器前缀，如果不加这个参数，有可能将会删除你的部分前缀
+            },
+            //autoprefixer配置
+            autoprefixer: {
+                browsers: ['> 1%', 'last 2 version', 'last 2 Explorer versions', 'last 3 Safari versions', 'Firefox >= 4', 'ie 8', 'ie 9', 'opera >= 8', 'ios 6', 'android 4'],
+                cascade: true, //是否美化属性值 默认：true 像这样：
+                //-webkit-transform: rotate(45deg);
+                //        transform: rotate(45deg);
+                remove: true //是否去掉不必要的前缀 默认：true 
+            },
+            spriter: {
+                //编译雪碧图过程需要的配置，可以为空
+                // The path and file name of where we will save the sprite sheet
+                //这是雪碧图自动合成的图。 很重要
+                'spriteSheet': dest + "/images/spritesheet.png", //'./dist/images/spritesheet.png', 
+                // Because we don't know where you will end up saving the CSS file at this point in the pipe,
+                // we need a litle help identifying where it will be.
+                //这是在css引用的图片路径，很重要
+                'pathToSpriteSheetFromCSS': "../images/spritesheet.png" //'../images/spritesheet.png' 
+            }
+        },
+    },
+    html: {                                                 //html任务的所有配置
+        active: true,                                   //是否激活该任务
+        all: src + "/html/**/*.html",
+        src: src + "/html/*.html",
+        dest: dest + "/demo",
+        settings: {　　
+            excludeName: "*", //压缩html时需要排除html 的名称，如果想要指定文件请用{a.html,b.html}的格式，否则用*
+            excludePath: '!' + 'src' + '/html/include/**/', //排除html 的目录
+            //编译html过程需要的配置，可以为空
+            htmlmin: { //压缩html中的js和css内容插件的配置
+                removeComments: false, //清除HTML注释
+                collapseWhitespace: true, //压缩HTML
+                collapseBooleanAttributes: false, //省略布尔属性的值 。例如：input标签的  checked="true"   ==>  checked
+                removeEmptyAttributes: true, //删除所有空格作属性值 。 例如：input标签的  id="" ==>  删除id属性
+                removeScriptTypeAttributes: true, //删除 script标签 的的type="text/javascript"
+                removeStyleLinkTypeAttributes: true, //删除 style标签 和 link标签 的type="text/css"
+                minifyJS: false, //压缩页面JS
+                minifyCSS: false //压缩页面CSS
+            },
+            include: { //编译html过程需要的配置，可以为空。如果不想用include模板的话，这个配置整个注掉即可
+                prefix: '@@',
+                basepath: '@file'
+            }　　　
+        }
+    }
+}
+</code></pre>
+<h3>启动服务</h3>
+<p>完成以上步骤后，就可以启动服务了。服务会自动监视文件变化并进行操作。同时刷新页面。</p>
+<p>启动命令如下：</p>
+<pre><code class="javaScript">gulp defaul</code></pre>
 </div>
 

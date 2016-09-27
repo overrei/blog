@@ -1,5 +1,6 @@
 encoding: utf-8 
 baseurl: /blog
+baseimgurl: /blog/assets/
 markdown: kramdown
 kramdown:
   input: GFM
