@@ -123,6 +123,10 @@ li {
     color: rgb(72, 84, 106);
 }
 
+blockquote{
+    text-shadow: 0px 0px 6px rgba(72, 84, 106, 0.26);
+    color: #b54949;
+}
 .footTools {
     cursor: pointer;
     opacity: 0;

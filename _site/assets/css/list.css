@@ -54,30 +54,30 @@ ul, li {
 
 }
 .list-box-title {
-    padding: 5px 10px;
-	background: rgba(107, 69, 59, 0.6);
-    color: #fff;
-    text-shadow: 1px 1px 1px #000;
-    border-radius: 3px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.31), 0 -1px 0 rgba(0, 0, 0, 0.32);
-    max-width: 180px;
-    text-decoration: none;
-    white-space: nowrap;
+   padding: 5px;
+    background: rgba(72, 84, 106, 0.81);
+    
+    border-top: 1px solid #76849e;
     overflow: hidden;
     display: inline-block;
     text-overflow: ellipsis;
     position: absolute;
-    top: 0;
     right: 0;
-    height: 34px;
+    height: 50px;
     bottom: 0;
     left: 0;
-    margin: auto;
+   
+}
+.list-box-title>.p1{
+     font-size: 14px;
+   color: #fff;
+    text-shadow: 1px 1px 1px #000; 
 }
 .pageImg {
 	width: 100%;
 	height: 100%;
 	background-size: cover;
+    background-position: center center;
 	transition: transform .45s;
 	-moz-transition: -moz-transform .45s;
 	-webkit-transition: -webkit-transform .45s;
@@ -94,8 +94,8 @@ ul, li {
     top: 0;
     background: rgba(150, 162, 183, 0.4);
     text-align: center;
-    text-decoration: none;
-    white-space: nowrap;
+    // text-decoration: none;
+    // white-space: nowrap;
     overflow: hidden;
     transition: opacity .3s;
     -moz-transition: -moz-opacity .3s;

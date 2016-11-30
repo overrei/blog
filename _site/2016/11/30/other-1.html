@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>list-detail</title>
+    <link rel="stylesheet" type="text/css" href="../../../assets/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/detail.css">
+    <link href="../../../assets/css/atelier-cave-dark.css" rel="stylesheet">
+</head>
+
+<body>
+    <ul class="page-tools">
+        <li>
+            <a class="fa fa-reply" onclick="history.go(-1)" href="javascript:;"></a>
+        </li>
+    </ul>
+
+    <div class="detail-head">
+<h1 class="title-h1">学习ES6 Promise的随笔记录1</h1>
+<p>最近想尝试用下Promise来解决回调地狱，记录一些知识点吧。</p>
+<p>感谢群里各位朋友的纠错！（群号：159758989）</p>
+</div> 
+<div class="detail-body">
+    <p>Promise类似jq里面的Deferred。但是二者之间的区别也不算小，具体区别再次不赘述，我只写下学习Promise.all的时候遇到的问题。</p>
+    <p>使用Promise.all的时候我的代码是这么写的</p>
+<pre><code class="javaScript">function asyn1(resolve) {
+    setTimeout(function() {
+        resolve("这是300s");
+    }, 300);
+}
+
+function asyn2(resolve) {
+    setTimeout(function() {
+        resolve("这是1000s");
+    }, 1000);
+}
+
+function asyn3(resolve) {
+    setTimeout(function() {
+        resolve("这是2000s");
+    }, 2000);
+}
+function asyncFunction(fn) {
+    return new Promise(function(resolve, reject) {
+            fn(resolve);
+        })
+        .then(function(value) {
+            console.log(value);//注意问题出在这！
+        });
+};
+var startDate = Date.now();
+
+function main() {
+    return Promise.all([
+        asyncFunction(asyn1),
+        asyncFunction(asyn2),
+        asyncFunction(asyn3)
+    ]);
+}
+
+main().then(function(values) {
+    console.log(Date.now() - startDate + 'ms');
+    console.log(values);
+});
+</code></pre>
+<p>打印的结果如下：</p>
+<pre><code class="javaScript">这是300s
+这是1000s
+这是2000s
+2003ms
+[undefined, undefined, undefined]
+</code></pre>
+<p>这显然是错误的！</p>
+<p>然后经过群里朋友们的帮助，我试了下面的写法。把asyncFunction方法里面创建的Promise对象的then去掉。</p>
+<pre><code class="javaScript">function asyncFunction(fn) {
+    return new Promise(function(resolve, reject) {
+        fn(resolve);
+    });
+};
+</code></pre>
+<p>打印的结果如下：</p>
+<pre><code class="javaScript">2001ms
+ ["这是300s", "这是1000s", "这是2000s"]
+</code></pre>
+<p>这次结果正确了。</p>
+<p>当然要是仅仅这样的话，我也不会记下这次问题。</p>
+    <p>在这个时候，我的理解是：<blockquote>我的Promise对象在创建的时候直接就用了then方法，所以main方法里面的then方法就失效了。</blockquote>
+    </p>
+    <p>群里面的朋友纠正了我的理解：<blockquote>then会把里面的操作包装成promise,所以你的asyncFunction返回的promise不是第一个new出来的Promise,而是then之后的，你得到的是undefined是因为你的then里没有返回值，默认返回undefined,如果then里也是异步操作，会在同步执行完后返回，这样一般都不是想要的结果，所以异步时会再用Promise显式包装</blockquote></p>
+<p>我的asyncFunction里面的then如果return了，那么这些值就会被Promise.all所接收，按照调用的顺序放到数组里面，最后一块输出到Promise.all的then里面，但是我之前在Promise.all的then里面并没有return，反而console了，所以每次then的时候就直接打印数据了，所以Promise.all也没有接收到所需的数据。因为默认返回undefined，所以最后Promise.all中then方法内打印出来的就都是undefined了。</p>
+<p>然后修改后的代码如下。</p>
+<pre><code class="javaScript"> function asyncFunction(fn) {
+    return new Promise(function(resolve, reject) {
+        fn(resolve);
+    }).then(function(values) {
+        return values;
+    });
+};
+</code></pre>
+<p>这次结果也是正确的。</p>
+<h3>兼容性问题</h3>
+ <p>Promise毕竟是ES6的东西，所以兼容性需要调整才能用。</p>
+ <p>可以使用npm上的<blockquote>es6-promise-polyfill</blockquote></p>
+ <p>能保证的是ie9可以使用Promise。官网上说修改下代码可以兼容ie9一下的浏览器，不过我试了下没有成功。改天再试试把。</p>
+</div>
+
+
+    <div class='footTools' id="footTools">
+        <ul>
+            <li>
+                <a class=" fa fa-chevron-up " href="javascript:; "></a>
+            </li>
+        </ul>
+    </div>
+</body>
+
+<script src="https://apps.bdimg.com/libs/highlight.js/9.1.0/highlight.min.js "></script>
+<script src="../../../assets/js/list-detail.js "></script>
+
+
+<html>
