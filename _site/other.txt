@@ -1,6 +1,6 @@
-﻿jekyll serve  //Ruby启动命令
-jekyll serve --safe --watch //Ruby启动命令
-
+﻿jekyll serve  //jekyll在Ruby下的启动命令
+jekyll serve --safe --watch //jekyll在Ruby下的启动命令
+jekyll serve -w --host=0.0.0.0  //同上，但是可以在局域网中访问
 
 # 将当前的改动暂存在本地仓库
 $ git add .
