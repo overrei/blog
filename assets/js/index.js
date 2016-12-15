@@ -109,10 +109,12 @@ Index.prototype = {
         return !!navigator.userAgent.match(/AppleWebKit.*Mobile.*/);
     },
     initMobile: function() {
+        index.$navBtn.on("touchend", function() {
+            index.$navBtn.hasClass("active") ? index.closeNav() : index.openNav();
+        });
         return this;
     },
     init: function() {
-
         index.bindEvent();
         if (!index.ifMobile()) {
             index.$navBtn.on("click", function() {
