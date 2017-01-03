@@ -8,7 +8,7 @@ layout: canvas-default
 			  		{% if tags == 'canvas' %} 
 				  		<li class="list-box">	
 				  			<div class="pageImg" style="background-image: url({{ post.pageImgurl }})" title="{{ post.title }}"  ></div>
-				  			<a href="{{ site.baseurl }}{{ post.url }}"><span class="list-box-title">{{ post.title }}</span></a>
+				  			<a href="javascript:void(0);" data-href="{{ site.baseurl }}{{ post.url }}"><span class="list-box-title">{{ post.title }}</span></a>
 				  		</li>
 					{% endif %}
 				{% endfor %}

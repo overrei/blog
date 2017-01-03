@@ -60,6 +60,11 @@
      }, 1)
  }
 
+ var listDetailClose = function(){
+    if(!window.parent.window.index)return;
+    window.parent.window.index.listDetailClose();
+ }
+
  addEve(footTools, "click", function(e) {
      if (hasClass(this, "active") && 　window.scrollTo != 0) {
          this.classList.add('animate');
