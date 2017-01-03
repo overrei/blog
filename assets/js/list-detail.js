@@ -33,7 +33,7 @@
      var timer = setTimeout(function() {
          var current_y = document.body.scrollTop,
              //console.log(current_y)
-             step = 40; //步长系数 即剩余的距离除以40 每1ms 移动一段距离
+             step = 20; //步长系数 即剩余的距离除以40 每1ms 移动一段距离
          if (tar_y > current_y) { //tar_y > current_y 即向下滚动
              var dist = Math.ceil((tar_y - current_y) / step);
              var next_y = current_y + dist;
@@ -54,7 +54,7 @@
                  //console.log('向上')
              } else {
                  window.scrollTo(0, tar_y);
-                 //clearInterval(timer)
+                 clearInterval(timer)
              }
          }
      }, 1)
