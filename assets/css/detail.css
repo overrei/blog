@@ -68,6 +68,8 @@ code {
     background: #333;
     padding: 5px;
     border-radius: 4px;
+    display: inline-block;
+    margin: 2px 0;
     font-size: 90%;
     color: #8bc5a8;
     text-shadow: 2px 2px 0px #000;
@@ -123,10 +125,11 @@ li {
     color: rgb(72, 84, 106);
 }
 
-blockquote{
+blockquote {
     text-shadow: 0px 0px 6px rgba(72, 84, 106, 0.26);
     color: #b54949;
 }
+
 .footTools {
     cursor: pointer;
     opacity: 0;
